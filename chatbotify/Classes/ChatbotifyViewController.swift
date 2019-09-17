@@ -20,12 +20,15 @@ import UIKit
     }
     
     private func initController() {
-        layout = UICollectionViewFlowLayout.init();
-        layout.estimatedItemSize = CGSize(width: self.view.bounds.size.width-10, height: 10);
-        layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-        layout.minimumLineSpacing = 1.0
-        layout.minimumInteritemSpacing = 1.0
-        layout.scrollDirection = UICollectionViewScrollDirection.vertical;
+        
+        if(layout == nil){
+            layout = UICollectionViewFlowLayout.init();
+            layout.estimatedItemSize = CGSize(width: self.view.bounds.size.width-10, height: 10);
+            layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+            layout.minimumLineSpacing = 1.0
+            layout.minimumInteritemSpacing = 1.0
+            layout.scrollDirection = UICollectionViewScrollDirection.vertical;
+        }
         
         if(collectionView == nil){
             collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout);
@@ -43,22 +46,19 @@ import UIKit
         collectionView.register(CBExternalLinkCell.self, forCellWithReuseIdentifier: "externalLinkCell");
         collectionView.register(CBCallToActionCell.self, forCellWithReuseIdentifier: "callToActionCell");
 
-        messages = Array<CBGroup>();
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onDataUpdate(_ :)), name: NSNotification.Name("dataUpdate"), object: nil);
+        if(messages == nil){
+            messages = Array<CBGroup>();
+        }
     }
     
     @objc private func onDataUpdate(_ notification:Notification) -> Void {
         // nothing TODO
     }
     
-    open override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated);
-        NotificationCenter.default.removeObserver(self);
-    }
-    
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDataUpdate(_ :)), name: NSNotification.Name("dataUpdate"), object: nil);
         
         initController();
         
@@ -69,6 +69,11 @@ import UIKit
             let lastIndexPath = IndexPath(item: item, section: section);
         	collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: true);
         }
+    }
+    
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated);
+        NotificationCenter.default.removeObserver(self);
     }
     
     @objc public func numberOfSections(in collectionView: UICollectionView) -> Int {
