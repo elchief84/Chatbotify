@@ -7,31 +7,29 @@
 
 import UIKit
 
-public class CBItem: NSObject {
-    public var type:CBMessageType!;
-    public var category:CBCategory!;
-    public var text:String?;
-    public var options:Array<String>?;
-    public var link:URL?;
-    public var sentByMe: Bool!;
-    public var action:Selector!;
-    public var target:UIViewController!;
-    public var userInfo:[String: Any]!;
+@objc public class CBItem: NSObject {
+    @objc public var type:CBMessageType = CBMessageType(rawValue: 0)!;
+    @objc public var category:CBCategory!;
+    @objc public var text:String?;
+    @objc public var options:Array<String>?;
+    @objc public var link:URL?;
+    @objc public var action:Selector!;
+    @objc public var target:UIViewController!;
+    @objc public var userInfo:[String: Any]!;
     
-    public static func make(type: CBMessageType!, category:CBCategory!, text:String? = nil, options:Array<String>? = nil, link: URL? = nil, sentByMe:Bool! = false, action: Selector? = nil, target: UIViewController? = nil, userInfo: [String: Any]? = nil) -> CBItem{
+    @objc public static func make(type: CBMessageType, category:CBCategory!, text:String? = nil, options:Array<String>? = nil, link: URL? = nil, action: Selector? = nil, target: UIViewController? = nil, userInfo: [String: Any]? = nil) -> CBItem{
         let item:CBItem = CBItem();
         item.type = type;
         item.category = category;
         item.text = text;
         item.options = options;
         item.link = link;
-        item.sentByMe = sentByMe;
         item.action = action;
         item.target = target;
         item.userInfo = userInfo;
         
         // coerence checks;
-        switch type! {
+        switch type {
         case .onlyMessage:
             item.checkOnlyMessage();
             break;

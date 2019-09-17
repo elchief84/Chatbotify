@@ -8,8 +8,8 @@
 import UIKit
 
 @available(iOS 10.0, *)
-class ChatbotifyCell: UICollectionViewCell {
-    public var type:CBMessageType!;
+@objc class ChatbotifyCell: UICollectionViewCell {
+    @objc public var type:CBMessageType;
     
     lazy var width: NSLayoutConstraint = {
         let width = contentView.widthAnchor.constraint(equalToConstant: bounds.size.width);
@@ -23,10 +23,12 @@ class ChatbotifyCell: UICollectionViewCell {
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.type = CBMessageType(rawValue: 0)!;
         super.init(coder: aDecoder);
     }
     
     override init(frame: CGRect) {
+        self.type = CBMessageType(rawValue: 0)!;
         super.init(frame: frame);contentView.translatesAutoresizingMaskIntoConstraints = false;
         contentView.backgroundColor = UIColor.red;
         // setupViews();
@@ -37,7 +39,7 @@ class ChatbotifyCell: UICollectionViewCell {
         return contentView.systemLayoutSizeFitting(CGSize(width: targetSize.width, height: 1))
     }
 
-    public static func dequeueReusableCell(type: CBMessageType, collectionView: UICollectionView, indexPath: IndexPath) -> ChatbotifyCell {
+    @objc public static func dequeueReusableCell(type: CBMessageType, collectionView: UICollectionView, indexPath: IndexPath) -> ChatbotifyCell {
         var reuseIdentifier:String = "";
         switch type {
             case .onlyMessage: reuseIdentifier = "messageCell"; break;
@@ -48,8 +50,8 @@ class ChatbotifyCell: UICollectionViewCell {
         return (collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? ChatbotifyCell)!;
     }
 
-    public func bind(isFirstOfSection: Bool, item: CBItem){
-        switch item.type! {
+    @objc public func bind(isFirstOfSection: Bool, item: CBItem){
+        switch item.type {
         case .onlyMessage: (self as! CBMessageViewCell).bind(isFirstOfSection: isFirstOfSection, item: item); break;
         case .multipleChoice: (self as! CBMultipleChoiceViewCell).bind(isFirstOfSection: isFirstOfSection, item: item); break;
         case .externalLink: (self as! CBExternalLinkCell).bind(isFirstOfSection: isFirstOfSection, item: item); break;

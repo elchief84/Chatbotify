@@ -7,11 +7,11 @@
 
 import UIKit
 
-public class CBCategory: NSObject {
-    public var name:String!;
-    public var thumb:UIImage!;
+@objc public class CBCategory: NSObject {
+    @objc public var name:String!;
+    @objc public var thumb:UIImage!;
     
-    public static func make(name:String!, thumb:UIImage!) -> CBCategory {
+    @objc public static func make(name:String!, thumb:UIImage!) -> CBCategory {
         let category:CBCategory = CBCategory();
         category.name = name;
         category.thumb = thumb;

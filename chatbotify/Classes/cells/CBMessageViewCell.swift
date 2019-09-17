@@ -61,7 +61,7 @@ class CBMessageViewCell: ChatbotifyCell {
         messageLabel.layer.shouldRasterize = true;
         
         // Corners
-        roundCorners(corners: [.topLeft, .topRight, ((item.sentByMe) ? .bottomLeft : .bottomRight)], radius: configuration.baloonRadius);
+        roundCorners(corners: [.topLeft, .topRight, .bottomRight], radius: configuration.baloonRadius);
         
     }
     
@@ -81,7 +81,7 @@ class CBMessageViewCell: ChatbotifyCell {
         super.layoutSubviews();
         messageWrapper.layoutIfNeeded();
         
-        roundCorners(corners: [.topLeft, .topRight, ((item.sentByMe) ? .bottomLeft : .bottomRight)], radius: configuration.baloonRadius);
+        roundCorners(corners: [.topLeft, .topRight, .bottomRight], radius: configuration.baloonRadius);
     }
 
 }

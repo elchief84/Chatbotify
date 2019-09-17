@@ -7,16 +7,16 @@
 
 import UIKit
 
-public enum CBMessageType {
-    case onlyMessage
-    case multipleChoice
-    case externalLink
-    case callToAction
+@objc public enum CBMessageType: NSInteger {
+    case onlyMessage = 0
+    case multipleChoice = 1
+    case externalLink = 2
+    case callToAction = 3
 }
 
-public class CBCommons: NSObject {
+@objc public class CBCommons: NSObject {
 
-    public static func makeColor(hexValue: Int) -> UIColor {
+    @objc public static func makeColor(hexValue: Int) -> UIColor {
         return UIColor.init(red: CGFloat((hexValue >> 16) & 0xFF)/255.0, green: CGFloat((hexValue >> 8) & 0xFF)/255.0, blue: CGFloat(hexValue & 0xFF)/255.0, alpha: CGFloat((hexValue >> 24) & 0xFF)/255.0);
     }
     
