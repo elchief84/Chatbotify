@@ -1,0 +1,6 @@
+framework module chatbotify {
+  umbrella header "chatbotify-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'chatbotify_Example' do
+  pod 'chatbotify', :path => '../'
+
+  target 'chatbotify_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

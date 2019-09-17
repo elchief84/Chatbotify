@@ -1,0 +1,16 @@
+PODS:
+  - chatbotify (0.1.0)
+
+DEPENDENCIES:
+  - chatbotify (from `../`)
+
+EXTERNAL SOURCES:
+  chatbotify:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  chatbotify: 6b20fa2f4a5f7232d20d5228324ca01148bc3419
+
+PODFILE CHECKSUM: 852e36531fe1cf922722e941ac76d929ce2d67e8
+
+COCOAPODS: 1.7.5
