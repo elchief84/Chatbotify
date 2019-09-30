@@ -62,7 +62,6 @@ import UIKit
         
         initController();
         
-        
         let section = numberOfSections(in: collectionView) - 1;
         if(section >= 0){
             let item = collectionView.numberOfItems(inSection: section) - 1;
@@ -94,7 +93,6 @@ import UIKit
     }
     
     @objc public func push(_ group: CBGroup) {
-        debugPrint(collectionView.contentSize.height);
         collectionView.performBatchUpdates({
             let section = messages.count;
             let set = IndexSet(integer: section);
@@ -103,12 +101,16 @@ import UIKit
             messages.append(group);
         }, completion: { (completion) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                debugPrint(self.collectionView.contentSize.height);
                 let indexPath:IndexPath = IndexPath(row: self.messages[self.messages.count-1].items.count-1, section: self.messages.count-1);
                 self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true);
             }
         });
         
+    }
+    
+    @objc public func clear() {
+        messages = Array();
+        collectionView.reloadData();
     }
     
     /*

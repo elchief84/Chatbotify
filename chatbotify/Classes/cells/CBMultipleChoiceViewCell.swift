@@ -55,7 +55,7 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
         
         let screenWidth = UIScreen.main.bounds.size.width;
         var xPos:CGFloat = screenWidth - horizontalMargin;
-        var yPos:CGFloat = 0.0;
+        var yPos:CGFloat = topMargin;
         
         // CHECK if the question is already answered
         
@@ -82,7 +82,22 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
             answer.setTitleColor(configuration.inputTextColor, for: UIControlState.normal);
             answer.layer.cornerRadius = answer.frame.size.height/2;
             
-            createAnswer(answer, animate: false);
+            answer.backgroundColor = configuration.answerBackgroundColor;
+            answer.setTitleColor(configuration.answerTextColor, for: UIControlState.normal);
+            answer.layer.cornerRadius = 0.0;
+            
+            let backgroundLayer:CAShapeLayer = CAShapeLayer();
+            let path = UIBezierPath(roundedRect: answer.bounds, byRoundingCorners: [.topLeft, .topRight, .bottomLeft], cornerRadii: CGSize(width: configuration.baloonRadius, height: configuration.baloonRadius))
+            backgroundLayer.path = path.cgPath;
+            answer.layer.mask = backgroundLayer;
+            
+            content.addSubview(answer);
+            
+            content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: answer.frame.origin.y + answer.frame.size.height + topMargin);
+            
+            heightConstraint = NSLayoutConstraint(item: content, attribute: .height, relatedBy: .equal, toItem: content, attribute: .height, multiplier: 1, constant: content.frame.size.height);
+            content.addConstraint(heightConstraint);
+            
             return
         }
         
@@ -120,16 +135,8 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
             height = yPos + 45;
             
             content.addSubview(optButton);
-            content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: optButton.frame.origin.y + optButton.frame.size.height);
+            content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: optButton.frame.origin.y + optButton.frame.size.height + topMargin);
             
-            /*if(animated){
-                optButton.alpha = 0.0f;
-                optButton.layer.affineTransform = CGAffineTransformMakeScale(1.3, 1.3);
-                [UIView animateWithDuration:0.2 delay:((indexPath.row + 1) * 0.3) + (i * 0.1) options:UIViewAnimationOptionCurveEaseOut animations:^{
-                    optButton.alpha = 1.0f;
-                    optButton.layer.affineTransform = CGAffineTransformMakeScale(1.0, 1.0);
-                    } completion:nil];
-            }*/
         }
         
         heightConstraint = NSLayoutConstraint(item: content, attribute: .height, relatedBy: .equal, toItem: content, attribute: .height, multiplier: 1, constant: content.frame.size.height);
@@ -169,7 +176,7 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
         self.setAnswerButtonPosition(answer);
         
         content.addSubview(answer);
-        content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: answer.frame.origin.y + answer.frame.size.height);
+        content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: answer.frame.origin.y + answer.frame.size.height + topMargin);
         if(heightConstraint == nil){
             heightConstraint = NSLayoutConstraint(item: content, attribute: .height, relatedBy: .equal, toItem: content, attribute: .height, multiplier: 1, constant: content.frame.size.height);
         }else{
