@@ -28,6 +28,8 @@ import UIKit
     @objc public var callToActionShadowColor:UIColor! = UIColor.yellow;
     @objc public var callToActionTextColor:UIColor = UIColor.black;
     
+    @objc public var dateHeaderTextColor:UIColor = UIColor.blue;
+    
     private static var defaultInstance:CBConfiguration!;
     
     @objc public static func getDefaultConfiguration() -> CBConfiguration {

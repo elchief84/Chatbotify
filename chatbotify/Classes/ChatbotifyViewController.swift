@@ -24,9 +24,9 @@ import UIKit
         if(layout == nil){
             layout = UICollectionViewFlowLayout.init();
             layout.estimatedItemSize = CGSize(width: self.view.bounds.size.width-10, height: 10);
-            layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-            layout.minimumLineSpacing = 1.0
-            layout.minimumInteritemSpacing = 1.0
+            layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1);
+            layout.minimumLineSpacing = 1.0;
+            layout.minimumInteritemSpacing = 1.0;
             layout.scrollDirection = UICollectionViewScrollDirection.vertical;
         }
         
@@ -45,6 +45,7 @@ import UIKit
         collectionView.register(CBMultipleChoiceViewCell.self, forCellWithReuseIdentifier: "multipleChoiceCell");
         collectionView.register(CBExternalLinkCell.self, forCellWithReuseIdentifier: "externalLinkCell");
         collectionView.register(CBCallToActionCell.self, forCellWithReuseIdentifier: "callToActionCell");
+        collectionView.register(CBHeaderCell.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell");
 
         if(messages == nil){
             messages = Array<CBGroup>();
@@ -82,8 +83,23 @@ import UIKit
     @objc public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages[section].items.count;
     }
+
+    @objc public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width:collectionView.frame.size.width, height:80.0)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "headerCell", for: indexPath as IndexPath) as! CBHeaderCell;
+            headerView.bind(messages[indexPath.section].date);
+            return headerView;
+        }
+        
+        fatalError("Unexpected element kind");
+    }
     
     @objc public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let item:CBItem = messages[indexPath.section].items![indexPath.row];
         
         let cell:ChatbotifyCell = ChatbotifyCell.dequeueReusableCell(type: item.type, collectionView: collectionView, indexPath: indexPath);
