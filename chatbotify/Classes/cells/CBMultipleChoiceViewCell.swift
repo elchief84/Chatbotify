@@ -105,38 +105,40 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
         
         optionButtons = Array();
         
-        for i in 0...item.options!.count-1 {
-            optLabel = UILabel(frame: CGRect(x: 0, y: topMargin, width: 100.0, height: 45.0));
-            optLabel.text = item.options![i];
-            optLabel.textAlignment = NSTextAlignment.center;
-            optLabel.font = configuration.font;
-            
-            let rect:CGRect = NSString(string: optLabel.text!).boundingRect(with: CGSize(width: maxFloat, height: 35.0), options: NSStringDrawingOptions(rawValue: NSStringDrawingOptions.usesLineFragmentOrigin.rawValue | NSStringDrawingOptions.usesFontLeading.rawValue), attributes: [NSAttributedStringKey.font:optLabel.font], context: nil);
-            
-            xPos = xPos - (rect.size.width + (2 * horizontalMargin) + horizontalSpace);
-            if(xPos < horizontalMargin){
-                xPos = screenWidth - horizontalMargin - (rect.size.width + (2 * horizontalMargin) + horizontalSpace);
-                yPos = yPos + 45 + topMargin;
+        if(item.options!.count > 0){
+            for i in 0...item.options!.count-1 {
+                optLabel = UILabel(frame: CGRect(x: 0, y: topMargin, width: 100.0, height: 45.0));
+                optLabel.text = item.options![i];
+                optLabel.textAlignment = NSTextAlignment.center;
+                optLabel.font = configuration.font;
+                
+                let rect:CGRect = NSString(string: optLabel.text!).boundingRect(with: CGSize(width: maxFloat, height: 35.0), options: NSStringDrawingOptions(rawValue: NSStringDrawingOptions.usesLineFragmentOrigin.rawValue | NSStringDrawingOptions.usesFontLeading.rawValue), attributes: [NSAttributedStringKey.font:optLabel.font], context: nil);
+                
+                xPos = xPos - (rect.size.width + (2 * horizontalMargin) + horizontalSpace);
+                if(xPos < horizontalMargin){
+                    xPos = screenWidth - horizontalMargin - (rect.size.width + (2 * horizontalMargin) + horizontalSpace);
+                    yPos = yPos + 45 + topMargin;
+                }
+                optLabel.frame = CGRect(x: xPos, y: yPos, width: rect.size.width + (2 * horizontalMargin), height: 45.0);
+                
+                let optButton:UIButton = UIButton(type: UIButtonType.custom);
+                optButton.frame = optLabel.frame;
+                optButton.titleLabel!.font = optLabel.font;
+                optButton.backgroundColor = configuration.inputBackgroundColor;
+                optButton.setTitle(optLabel.text, for:UIControlState.normal);
+                optButton.setTitleColor(configuration.inputTextColor, for: UIControlState.normal);
+                optButton.layer.cornerRadius = optButton.frame.size.height/2;
+                optButton.tag = (i+1);
+                optButton.addTarget(self, action: #selector(selectOption(_:)), for: .touchUpInside);
+                
+                optionButtons.append(optButton);
+                
+                height = yPos + 45;
+                
+                content.addSubview(optButton);
+                content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: optButton.frame.origin.y + optButton.frame.size.height + topMargin);
+                
             }
-            optLabel.frame = CGRect(x: xPos, y: yPos, width: rect.size.width + (2 * horizontalMargin), height: 45.0);
-            
-            let optButton:UIButton = UIButton(type: UIButtonType.custom);
-            optButton.frame = optLabel.frame;
-            optButton.titleLabel!.font = optLabel.font;
-            optButton.backgroundColor = configuration.inputBackgroundColor;
-            optButton.setTitle(optLabel.text, for:UIControlState.normal);
-            optButton.setTitleColor(configuration.inputTextColor, for: UIControlState.normal);
-            optButton.layer.cornerRadius = optButton.frame.size.height/2;
-            optButton.tag = (i+1);
-            optButton.addTarget(self, action: #selector(selectOption(_:)), for: .touchUpInside);
-            
-            optionButtons.append(optButton);
-            
-            height = yPos + 45;
-            
-            content.addSubview(optButton);
-            content.frame = CGRect(x: 0, y: 0, width: self.contentView.frame.size.width, height: optButton.frame.origin.y + optButton.frame.size.height + topMargin);
-            
         }
         
         heightConstraint = NSLayoutConstraint(item: content, attribute: .height, relatedBy: .equal, toItem: content, attribute: .height, multiplier: 1, constant: content.frame.size.height);
