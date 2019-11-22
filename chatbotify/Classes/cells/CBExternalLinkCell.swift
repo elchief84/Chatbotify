@@ -51,6 +51,7 @@ class CBExternalLinkCell: ChatbotifyCell {
         let screenWidth = UIScreen.main.bounds.size.width;
         var xPos:CGFloat = screenWidth - horizontalMargin;
         
+        item.text = (item.text != nil) ? item.text : "link";
         
         optLabel = UILabel(frame: CGRect(x: 0, y: 0.0, width: 100.0, height: 45.0));
         optLabel.text = item.text;
