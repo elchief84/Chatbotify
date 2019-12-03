@@ -10,8 +10,8 @@ import UIKit
 @objc public enum CBMessageType: NSInteger {
     case onlyMessage = 0
     case multipleChoice = 1
-    case externalLink = 2
-    case callToAction = 3
+    case externalLink = 3
+    case callToAction = 2
 }
 
 @objc public class CBCommons: NSObject {

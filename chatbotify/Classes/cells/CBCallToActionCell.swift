@@ -51,7 +51,7 @@ class CBCallToActionCell: ChatbotifyCell {
         let screenWidth = UIScreen.main.bounds.size.width;
         var xPos:CGFloat = screenWidth - horizontalMargin;
         
-        item.text = (item.text != nil) ? item.text : ((item.options!.count > 0) ? item.options![0] : "link");
+        item.text = (item.text != nil) ? item.text : ((item.options!.count > 0) ? (item.options![0]["text"] as! String) : "link");
 
         optLabel = UILabel(frame: CGRect(x: 0, y: 0.0, width: 100.0, height: 45.0));
         optLabel.text = item.text;
@@ -66,9 +66,9 @@ class CBCallToActionCell: ChatbotifyCell {
         let button:UIButton = UIButton(type: UIButtonType.custom);
         button.frame = optLabel.frame;
         button.titleLabel!.font = optLabel.font;
-        button.backgroundColor = configuration.inputBackgroundColor;
+        button.backgroundColor = configuration.answerBackgroundColor;
         button.setTitle(optLabel.text, for:UIControlState.normal);
-        button.setTitleColor(configuration.inputTextColor, for: UIControlState.normal);
+        button.setTitleColor(configuration.answerTextColor, for: UIControlState.normal);
         button.layer.cornerRadius = button.frame.size.height/2;
         button.addTarget(self, action: #selector(performAction(_:)), for: .touchUpInside);
         
@@ -81,7 +81,12 @@ class CBCallToActionCell: ChatbotifyCell {
     }
     
     @objc private func performAction(_ sender: UIButton) {
-        item.target.perform(item.action, with: item.userInfo);
+        let r = item.options![0];
+        if(self.delegate != nil) {
+            self.caller?.remove(self.message!);
+            self.delegate!.onResponseCompleted(botMessageId: item.botMessageId!, value: r["value"] as! String);
+        }
+        NotificationCenter.default.post(name: NSNotification.Name(r["value"] as! String), object: nil);
     }
     
 }

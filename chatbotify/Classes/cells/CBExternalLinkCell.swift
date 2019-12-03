@@ -51,7 +51,7 @@ class CBExternalLinkCell: ChatbotifyCell {
         let screenWidth = UIScreen.main.bounds.size.width;
         var xPos:CGFloat = screenWidth - horizontalMargin;
         
-        item.text = (item.text != nil) ? item.text : "link";
+        item.text = (item.options!.count > 0) ? (item.options![0]["text"] as! String) : "link";
         
         optLabel = UILabel(frame: CGRect(x: 0, y: 0.0, width: 100.0, height: 45.0));
         optLabel.text = item.text;
@@ -66,9 +66,9 @@ class CBExternalLinkCell: ChatbotifyCell {
         let button:UIButton = UIButton(type: UIButtonType.custom);
         button.frame = optLabel.frame;
         button.titleLabel!.font = optLabel.font;
-        button.backgroundColor = configuration.inputBackgroundColor;
+        button.backgroundColor = configuration.answerBackgroundColor;
         button.setTitle(optLabel.text, for:UIControlState.normal);
-        button.setTitleColor(configuration.inputTextColor, for: UIControlState.normal);
+        button.setTitleColor(configuration.answerTextColor, for: UIControlState.normal);
         button.layer.cornerRadius = button.frame.size.height/2;
         button.addTarget(self, action: #selector(openLink(_:)), for: UIControlEvents.touchUpInside);
         
@@ -81,7 +81,7 @@ class CBExternalLinkCell: ChatbotifyCell {
     }
     
     @objc private func openLink(_ sender:UIButton) {
-        UIApplication.shared.openURL(item.link!);
+        UIApplication.shared.open(item!.link!, options: [:], completionHandler: nil);
     }
     
 }

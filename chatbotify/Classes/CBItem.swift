@@ -11,13 +11,14 @@ import UIKit
     @objc public var type:CBMessageType = CBMessageType(rawValue: 0)!;
     @objc public var category:CBCategory!;
     @objc public var text:String?;
-    @objc public var options:Array<String>?;
+    @objc public var botMessageId:NSNumber?;
+    @objc public var options:Array<[String:Any]>?;
     @objc public var link:URL?;
     @objc public var action:Selector!;
     @objc public var target:UIViewController!;
     @objc public var userInfo:[String: Any]!;
     
-    @objc public static func make(type: CBMessageType, category:CBCategory!, text:String? = nil, options:Array<String>? = nil, link: URL? = nil, action: Selector? = nil, target: UIViewController? = nil, userInfo: [String: Any]? = nil) -> CBItem{
+    @objc public static func make(type: CBMessageType, category:CBCategory!, text:String? = nil, options:Array<[String:Any]>? = nil, link: URL? = nil, action: Selector? = nil, target: UIViewController? = nil, userInfo: [String: Any]? = nil,  botMessageId: NSNumber!) -> CBItem{
         let item:CBItem = CBItem();
         item.type = type;
         item.category = category;
@@ -27,6 +28,7 @@ import UIKit
         item.action = action;
         item.target = target;
         item.userInfo = userInfo;
+        item.botMessageId = botMessageId;
         
         // coerence checks;
         switch type {

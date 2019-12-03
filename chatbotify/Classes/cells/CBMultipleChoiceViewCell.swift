@@ -108,7 +108,7 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
         if(item.options!.count > 0){
             for i in 0...item.options!.count-1 {
                 optLabel = UILabel(frame: CGRect(x: 0, y: topMargin, width: 100.0, height: 45.0));
-                optLabel.text = item.options![i];
+                optLabel.text = (item.options![i]["text"] as! String);
                 optLabel.textAlignment = NSTextAlignment.center;
                 optLabel.font = configuration.font;
                 
@@ -163,6 +163,7 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
         item.text = answer.titleLabel?.text;
         NotificationCenter.default.post(name: NSNotification.Name("dataUpdate"), object: nil, userInfo: ["item": item]);
         createAnswer(answer, animate: true);
+        self.performAction(sender);
     }
     
     private func createAnswer(_ answer: UIButton, animate: Bool) {
@@ -279,6 +280,14 @@ class CBMultipleChoiceViewCell: ChatbotifyCell {
         yPos = (content.frame.size.height - button.frame.size.height)/2;
         
         button.frame = CGRect(x: xPos, y: yPos, width: rect.size.width + (2 * horizontalMargin), height: 45.0);
+    }
+    
+    @objc private func performAction(_ sender: UIButton) {
+        let r = item.options![0];
+        if(self.delegate != nil) {
+            self.delegate!.onResponseCompleted(botMessageId: item.botMessageId!, value: r["value"] as! String);
+        }
+        NotificationCenter.default.post(name: NSNotification.Name(r["value"] as! String), object: nil);
     }
 
 }

@@ -8,8 +8,18 @@
 import UIKit
 
 @available(iOS 10.0, *)
+
+@objc public protocol ChatbotifyCellDelegate{
+    func onResponseCompleted(botMessageId:NSNumber, value:String);
+}
+
 @objc class ChatbotifyCell: UICollectionViewCell {
+    
     @objc public var type:CBMessageType;
+    public var message:CBGroup?;
+    
+    public var delegate:ChatbotifyCellDelegate?;
+    public var caller:ChatbotifyViewController?;
     
     lazy var width: NSLayoutConstraint = {
         let width = contentView.widthAnchor.constraint(equalToConstant: bounds.size.width);

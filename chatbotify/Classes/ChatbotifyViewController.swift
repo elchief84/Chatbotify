@@ -11,6 +11,7 @@ import UIKit
 @objc open class ChatbotifyViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet public var collectionView: UICollectionView!;
+    @objc public var caller: UIViewController?;
     private var layout:UICollectionViewFlowLayout!;
     
     private var messages:Array<CBGroup>!;
@@ -62,6 +63,7 @@ import UIKit
         NotificationCenter.default.addObserver(self, selector: #selector(onDataUpdate(_ :)), name: NSNotification.Name("dataUpdate"), object: nil);
         
         initController();
+        collectionView.reloadData() // DEBUG;
         
         let section = numberOfSections(in: collectionView) - 1;
         if(section >= 0){
@@ -99,11 +101,15 @@ import UIKit
     }
     
     @objc public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let item:CBItem = messages[indexPath.section].items![indexPath.row];
-        
         let cell:ChatbotifyCell = ChatbotifyCell.dequeueReusableCell(type: item.type, collectionView: collectionView, indexPath: indexPath);
         cell.bind(isFirstOfSection: (indexPath.row == 0), item: item);
+        
+        if(caller != nil){
+            cell.message = messages[indexPath.section];
+            cell.caller = self;
+            cell.delegate = (caller as! ChatbotifyCellDelegate);
+        }
         
         return cell;
     }
@@ -124,9 +130,15 @@ import UIKit
         
     }
     
+    @objc public func remove(_ group: CBGroup) {
+        messages.remove(at: messages.index(of: group)!);
+    }
+    
     @objc public func clear() {
         messages = Array();
-        collectionView.reloadData();
+        if(collectionView != nil){
+            collectionView.reloadData();
+        }
     }
     
     /*
